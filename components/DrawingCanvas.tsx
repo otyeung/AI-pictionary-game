@@ -216,7 +216,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={stopDrawing}
-        className="w-full max-w-[500px] aspect-square rounded-xl border-2 border-gray-200 cursor-crosshair bg-white shadow-inner touch-none"
+        className="w-full max-w-[500px] aspect-square rounded-xl border-2 border-gray-200 dark:border-gray-600 cursor-crosshair bg-white shadow-inner touch-none"
       />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -228,7 +228,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
               className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
                 brushColor === color
                   ? "border-blue-500 scale-110 ring-2 ring-blue-300"
-                  : "border-gray-300"
+                  : "border-gray-300 dark:border-gray-600"
               }`}
               style={{ backgroundColor: color }}
               aria-label={`Color ${color}`}
@@ -237,7 +237,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600 font-medium">Size:</label>
+          <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">Size:</label>
           <input
             type="range"
             min={1}
@@ -246,7 +246,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
             onChange={(e) => setBrushSize(Number(e.target.value))}
             className="w-24 accent-blue-500"
           />
-          <span className="text-sm text-gray-500 w-6 text-center">
+          <span className="text-sm text-gray-500 dark:text-gray-400 w-6 text-center">
             {brushSize}
           </span>
         </div>
@@ -254,13 +254,13 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
         <div className="flex gap-2 ml-auto">
           <button
             onClick={handleUndo}
-            className="px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
             ↩ Undo
           </button>
           <button
             onClick={handleClear}
-            className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+            className="px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
           >
             ✕ Clear
           </button>
