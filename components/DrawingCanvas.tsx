@@ -31,10 +31,12 @@ const COLORS = [
 
 const MAX_UNDO_STEPS = 20;
 
-const DrawingCanvas = forwardRef<DrawingCanvasHandle>(function DrawingCanvas(
-  _props,
-  ref
-) {
+interface DrawingCanvasProps {
+  onDrawingStart?: () => void;
+}
+
+const DrawingCanvas = forwardRef<DrawingCanvasHandle, DrawingCanvasProps>(
+  function DrawingCanvas({ onDrawingStart }, ref) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushSize, setBrushSize] = useState(4);
@@ -112,8 +114,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle>(function DrawingCanvas(
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       setIsDrawing(true);
+      onDrawingStart?.();
     },
-    [getCtx, saveState, brushColor, brushSize]
+    [getCtx, saveState, brushColor, brushSize, onDrawingStart]
   );
 
   const draw = useCallback(
@@ -267,4 +270,5 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle>(function DrawingCanvas(
   );
 });
 
+export type { DrawingCanvasProps };
 export default DrawingCanvas;

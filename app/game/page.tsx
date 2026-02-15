@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import DrawingCanvas, {
   type DrawingCanvasHandle,
 } from "@/components/DrawingCanvas";
 import GuessDisplay, { type Guess } from "@/components/GuessDisplay";
 import GameControls, { getRandomWord } from "@/components/GameControls";
+
+const TIMER_DURATION = 20;
 
 export default function GamePage() {
   const canvasRef = useRef<DrawingCanvasHandle>(null);
@@ -13,6 +15,10 @@ export default function GamePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentWord, setCurrentWord] = useState(() => getRandomWord());
   const [error, setError] = useState<string | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hasTimerStarted = useRef(false);
+  const hasSubmittedOnTimeout = useRef(false);
 
   const handleSubmit = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -54,12 +60,57 @@ export default function GamePage() {
     }
   }, []);
 
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const resetTimer = useCallback(() => {
+    stopTimer();
+    setTimeRemaining(null);
+    hasTimerStarted.current = false;
+    hasSubmittedOnTimeout.current = false;
+  }, [stopTimer]);
+
   const handleNewWord = useCallback(() => {
     setCurrentWord(getRandomWord());
     setGuesses([]);
     setError(null);
+    resetTimer();
     canvasRef.current?.clear();
+  }, [resetTimer]);
+
+  const handleDrawingStart = useCallback(() => {
+    if (hasTimerStarted.current) return;
+    hasTimerStarted.current = true;
+    setTimeRemaining(TIMER_DURATION);
+
+    timerRef.current = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev === null || prev <= 1) {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   }, []);
+
+  useEffect(() => {
+    if (timeRemaining === 0 && !hasSubmittedOnTimeout.current) {
+      hasSubmittedOnTimeout.current = true;
+      handleSubmit();
+    }
+  }, [timeRemaining, handleSubmit]);
+
+  useEffect(() => {
+    return () => stopTimer();
+  }, [stopTimer]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -78,8 +129,9 @@ export default function GamePage() {
               onNewWord={handleNewWord}
               isLoading={isLoading}
               currentWord={currentWord}
+              timeRemaining={timeRemaining}
             />
-            <DrawingCanvas ref={canvasRef} />
+            <DrawingCanvas ref={canvasRef} onDrawingStart={handleDrawingStart} />
           </div>
 
           <div className="flex flex-col gap-3">
