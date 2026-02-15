@@ -6,6 +6,7 @@ import DrawingCanvas, {
 } from '@/components/DrawingCanvas'
 import GuessDisplay, { type Guess } from '@/components/GuessDisplay'
 import GameControls, { getRandomWord } from '@/components/GameControls'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const TIMER_DURATION = 20
 
@@ -117,12 +118,15 @@ export default function GamePage() {
   }, [stopTimer])
 
   return (
-    <div className='min-h-screen bg-gradient-to-b from-gray-50 to-white'>
-      <header className='py-6 text-center'>
+    <div className='min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950'>
+      <header className='py-6 text-center relative'>
+        <div className='absolute top-4 right-4'>
+          <ThemeToggle />
+        </div>
         <h1 className='text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
           🎨 AI Pictionary
         </h1>
-        <p className='text-gray-500 mt-1'>Draw it. AI guesses it.</p>
+        <p className='text-gray-500 dark:text-gray-400 mt-1'>Draw it. AI guesses it.</p>
       </header>
 
       <main className='max-w-5xl mx-auto px-4 pb-12'>
@@ -142,10 +146,10 @@ export default function GamePage() {
           </div>
 
           <div className='flex flex-col gap-3'>
-            <h2 className='text-lg font-bold text-gray-700'>AI Guesses</h2>
+            <h2 className='text-lg font-bold text-gray-700 dark:text-gray-300'>AI Guesses</h2>
 
             {error && (
-              <div className='p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm'>
+              <div className='p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm'>
                 {error}
               </div>
             )}

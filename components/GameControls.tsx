@@ -30,15 +30,15 @@ export default function GameControls({
 }: GameControlsProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
-        <p className="text-sm font-medium text-purple-600 uppercase tracking-wider">
+      <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border border-purple-100 dark:border-purple-800">
+        <p className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">
           Draw this:
         </p>
-        <p className="text-3xl font-bold text-gray-800 mt-1">{currentWord}</p>
+        <p className="text-3xl font-bold text-gray-800 dark:text-gray-100 mt-1">{currentWord}</p>
         {timeRemaining != null && (
           <p
             className={`text-lg font-bold mt-2 ${
-              timeRemaining <= 5 ? "text-red-500" : "text-gray-600"
+              timeRemaining <= 5 ? "text-red-500" : "text-gray-600 dark:text-gray-400"
             }`}
           >
             ⏱ {timeRemaining}s
@@ -56,7 +56,7 @@ export default function GameControls({
         </button>
         <button
           onClick={onNewWord}
-          className="px-5 py-3 text-lg font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors active:scale-[0.98]"
+          className="px-5 py-3 text-lg font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors active:scale-[0.98]"
         >
           🎲 New Word
         </button>
