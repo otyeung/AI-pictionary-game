@@ -18,6 +18,7 @@ interface GameControlsProps {
   onNewWord: () => void;
   isLoading: boolean;
   currentWord: string;
+  timeRemaining?: number | null;
 }
 
 export default function GameControls({
@@ -25,6 +26,7 @@ export default function GameControls({
   onNewWord,
   isLoading,
   currentWord,
+  timeRemaining,
 }: GameControlsProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -33,6 +35,15 @@ export default function GameControls({
           Draw this:
         </p>
         <p className="text-3xl font-bold text-gray-800 mt-1">{currentWord}</p>
+        {timeRemaining != null && (
+          <p
+            className={`text-lg font-bold mt-2 ${
+              timeRemaining <= 5 ? "text-red-500" : "text-gray-600"
+            }`}
+          >
+            ⏱ {timeRemaining}s
+          </p>
+        )}
       </div>
 
       <div className="flex gap-3">
